@@ -41,3 +41,24 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: 1Sky
+    uniqueID: 691476987
+    locked: 0
+  - name: 2Buildings
+    uniqueID: 2880358641
+    locked: 0
+  - name: 3Buildings
+    uniqueID: 658017975
+    locked: 0
+  - name: 4Buildings
+    uniqueID: 3167568975
+    locked: 0
+  - name: 5Buildings
+    uniqueID: 664347389
+    locked: 0
+  - name: 6Floor
+    uniqueID: 2855799505
+    locked: 0
+  - name: Player
+    uniqueID: 439441365
+    locked: 0
