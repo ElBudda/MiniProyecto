@@ -59,6 +59,9 @@ TagManager:
   - name: 6Floor
     uniqueID: 2855799505
     locked: 0
+  - name: Interactables
+    uniqueID: 919891307
+    locked: 0
   - name: Player
     uniqueID: 439441365
     locked: 0
