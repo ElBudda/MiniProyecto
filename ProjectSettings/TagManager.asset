@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - TubeEntrance
+  - TubeExit
   layers:
   - Default
   - TransparentFX

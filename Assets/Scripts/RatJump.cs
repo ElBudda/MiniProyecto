@@ -21,7 +21,7 @@ public class RatJump : MonoBehaviour
     {
         CheckGround();
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded) // Change Space to any jump button
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded) 
         {
             Jump();
         }

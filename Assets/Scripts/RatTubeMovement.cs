@@ -5,7 +5,7 @@ using UnityEngine;
 public class RatTubeMovement : MonoBehaviour
 {
     public float speed = 5f;               // Movement speed inside the tube
-    public Transform tubePath;             // Assign the TubePath GameObject here
+    public Transform tubePath;             // Assign the Tube GameObject (waypoints parent)
     public SpriteRenderer spriteRenderer;  // Assign the rat's SpriteRenderer
 
     private Rigidbody2D ratRb;
@@ -16,6 +16,7 @@ public class RatTubeMovement : MonoBehaviour
     void Start()
     {
         ratRb = GetComponent<Rigidbody2D>();
+
         if (spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
     }
@@ -28,7 +29,7 @@ public class RatTubeMovement : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.W)) // Press W to enter a tube
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S)) // W to go up, S to go down
             {
                 TryEnterTube();
             }
@@ -37,26 +38,40 @@ public class RatTubeMovement : MonoBehaviour
 
     void TryEnterTube()
     {
-        Collider2D tubeEntrance = Physics2D.OverlapCircle(transform.position, 0.2f);
+        Debug.Log("Checking for tube entrance...");
 
-        if (tubeEntrance != null)
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.3f);
+
+        foreach (Collider2D col in colliders)
         {
-            TubePath tube = tubeEntrance.GetComponent<TubePath>();
-            if (tube != null)
+            Debug.Log("Checking collider: " + col.gameObject.name);
+
+            if (col.CompareTag("TubeEntrance") && Input.GetKeyDown(KeyCode.W))
             {
-                tubePath = tube.waypointParent; // Get waypoints from the TubePath script
-                EnterTube();
+                Debug.Log("Tube entrance detected (going up): " + col.gameObject.name);
+                StartTubeTravel(false); // Normal order (going up)
+                return;
+            }
+            else if (col.CompareTag("TubeExit") && Input.GetKeyDown(KeyCode.S))
+            {
+                Debug.Log("Tube exit detected (going down): " + col.gameObject.name);
+                StartTubeTravel(true); // Reversed order (going down)
+                return;
             }
         }
+
+        Debug.Log("No valid tube entrance found.");
     }
 
-    void EnterTube()
+    void StartTubeTravel(bool reverse)
     {
         if (tubePath == null)
         {
             Debug.LogError("Tube path not assigned!");
             return;
         }
+
+        Debug.Log("Starting tube travel. Reverse: " + reverse);
 
         waypoints.Clear();
         foreach (Transform child in tubePath)
@@ -70,17 +85,20 @@ public class RatTubeMovement : MonoBehaviour
             return;
         }
 
+        if (reverse)
+        {
+            waypoints.Reverse(); // Reverse waypoint order for going down
+            Debug.Log("Waypoints reversed for downward travel.");
+        }
+
         inTube = true;
         spriteRenderer.enabled = false; // Hide rat
         currentWaypointIndex = 0;
         transform.position = waypoints[currentWaypointIndex].position;
 
-        if (inTube == true)
-        {
-            ratRb.gravityScale = 0;
-        }
-
-        }
+        ratRb.gravityScale = 0; // Disable gravity while in the tube
+        Debug.Log("Gravity disabled. Moving through tube.");
+    }
 
     void MoveThroughTube()
     {
@@ -103,9 +121,8 @@ public class RatTubeMovement : MonoBehaviour
     {
         inTube = false;
         spriteRenderer.enabled = true; // Show rat again
-        if (inTube == false)
-        {
-            ratRb.gravityScale = 1;
-        }
+        ratRb.gravityScale = 1; // Restore gravity
+
+        Debug.Log("Exited tube. Gravity restored.");
     }
 }
