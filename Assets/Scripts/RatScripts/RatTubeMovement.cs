@@ -8,6 +8,7 @@ public class RatTubeMovement : MonoBehaviour
     public Transform tubePath;             // Assign the Tube GameObject (waypoints parent)
     public SpriteRenderer spriteRenderer;  // Assign the rat's SpriteRenderer
 
+    private PolygonCollider2D ratCollider;
     private Rigidbody2D ratRb;
     private List<Transform> waypoints = new List<Transform>();
     private int currentWaypointIndex = 0;
@@ -16,7 +17,7 @@ public class RatTubeMovement : MonoBehaviour
     void Start()
     {
         ratRb = GetComponent<Rigidbody2D>();
-
+        ratCollider = GetComponent<PolygonCollider2D>();
         if (spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
     }
@@ -102,13 +103,15 @@ public class RatTubeMovement : MonoBehaviour
 
     void MoveThroughTube()
     {
+        ratCollider.enabled = false;
         if (currentWaypointIndex < waypoints.Count)
         {
             transform.position = Vector2.MoveTowards(transform.position, waypoints[currentWaypointIndex].position, speed * Time.deltaTime);
 
-            if (Vector2.Distance(transform.position, waypoints[currentWaypointIndex].position) < 0.1f)
+            if (Vector2.Distance(transform.position, waypoints[currentWaypointIndex].position) < 0.05f)
             {
                 currentWaypointIndex++;
+                Debug.Log("passed waypoint" + currentWaypointIndex);
             }
         }
         else
@@ -119,6 +122,7 @@ public class RatTubeMovement : MonoBehaviour
 
     void ExitTube()
     {
+        ratCollider.enabled = true;
         inTube = false;
         spriteRenderer.enabled = true; // Show rat again
         ratRb.gravityScale = 1; // Restore gravity
