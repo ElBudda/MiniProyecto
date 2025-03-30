@@ -7,6 +7,7 @@ public class Inventory : MonoBehaviour
 {
     public Dictionary<string, int> items = new Dictionary<string, int>();
     public ItemDatabase itemDatabase;  // Reference to the database
+    public InventoryUIManager inventoryUIManager;
 
     public void AddItem(string itemName)
     {
@@ -20,7 +21,9 @@ public class Inventory : MonoBehaviour
         }
 
         Debug.Log("Added: " + itemName);
+        inventoryUIManager.UpdateUI();  // Update the UI when an item is added
     }
+
 
     public bool HasItem(string itemName, int amount)
     {

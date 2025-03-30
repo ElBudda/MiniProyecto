@@ -9,7 +9,7 @@ public class InventoryUIManager : MonoBehaviour
     public Transform inventoryPanel; // UI container for inventory items
     public GameObject inventorySlotPrefab; // Prefab for UI slots
 
-    void UpdateUI()
+    public void UpdateUI()
     {
         // Clear previous UI slots
         foreach (Transform child in inventoryPanel)

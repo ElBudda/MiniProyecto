@@ -1,11 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; // For scene management
 
 public class RatTubeMovement : MonoBehaviour
 {
     public float speed = 5f;               // Movement speed inside the tube
-    public Transform tubePath;             // Assign the Tube GameObject (waypoints parent)
+    public Transform tubePath;             // Assign TubeParent through script
     public SpriteRenderer spriteRenderer;  // Assign the rat's SpriteRenderer
 
     private PolygonCollider2D ratCollider;
@@ -14,12 +14,78 @@ public class RatTubeMovement : MonoBehaviour
     private int currentWaypointIndex = 0;
     private bool inTube = false;
 
+    void Awake()
+    {
+        // Subscribe to sceneLoaded event as soon as the script is awake
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
     void Start()
     {
-        ratRb = GetComponent<Rigidbody2D>();
-        ratCollider = GetComponent<PolygonCollider2D>();
+        Initialize();
+    }
+
+    // Initialize all needed components
+    void Initialize()
+    {
+        if (ratRb == null)
+            ratRb = GetComponent<Rigidbody2D>();
+
+        if (ratCollider == null)
+            ratCollider = GetComponent<PolygonCollider2D>();
+
         if (spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // Reset tube state when initializing
+        inTube = false;
+        waypoints.Clear();
+
+        // Check for TubeParent
+        CheckForTubeParent();
+    }
+
+    // Called whenever a new scene is loaded
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("New scene loaded, checking for TubeParent...");
+
+        // Reset tube status and references
+        tubePath = null;
+        inTube = false;
+        waypoints.Clear();
+
+        // Ensure visibility and physics are reset
+        if (spriteRenderer != null)
+            spriteRenderer.enabled = true;
+
+        if (ratRb != null)
+            ratRb.gravityScale = 1;
+
+        if (ratCollider != null)
+            ratCollider.enabled = true;
+
+        // Wait a frame to ensure scene is fully loaded before checking for tube parent
+        Invoke("CheckForTubeParent", 0.1f);
+    }
+
+    // Helper function to find TubeParent in the scene
+    void CheckForTubeParent()
+    {
+        tubePath = null; // Clear the reference first
+
+        // Find by tag instead of name
+        GameObject tubeParentObject = GameObject.FindGameObjectWithTag("TubeParent"); 
+
+        if (tubeParentObject != null)
+        {
+            tubePath = tubeParentObject.transform; // Assign TubeParent's transform
+            Debug.Log("Tube path found by tag and assigned: " + tubeParentObject.name);
+        }
+        else
+        {
+            Debug.Log("No object with tube path tag found in the current scene. Tube movement will be disabled.");
+        }
     }
 
     void Update()
@@ -39,6 +105,13 @@ public class RatTubeMovement : MonoBehaviour
 
     void TryEnterTube()
     {
+        // Check if we're in a scene with tubes first
+        if (tubePath == null)
+        {
+            Debug.Log("No tube system available in this scene.");
+            return;
+        }
+
         Debug.Log("Checking for tube entrance...");
 
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.3f);
@@ -111,7 +184,7 @@ public class RatTubeMovement : MonoBehaviour
             if (Vector2.Distance(transform.position, waypoints[currentWaypointIndex].position) < 0.05f)
             {
                 currentWaypointIndex++;
-                Debug.Log("passed waypoint" + currentWaypointIndex);
+                Debug.Log("passed waypoint " + currentWaypointIndex);
             }
         }
         else
@@ -128,5 +201,11 @@ public class RatTubeMovement : MonoBehaviour
         ratRb.gravityScale = 1; // Restore gravity
 
         Debug.Log("Exited tube. Gravity restored.");
+    }
+
+    // Ensure cleanup and unsubscribe from event when the object is destroyed
+    void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }
