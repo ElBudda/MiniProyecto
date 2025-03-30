@@ -1,47 +1,46 @@
 using System.Collections.Generic;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class Inventory : MonoBehaviour
 {
+    public ItemDatabase itemDatabase;
+    public InventoryUIManager uiManager;
+
+    // Dictionary to store items and their quantities
     public Dictionary<string, int> items = new Dictionary<string, int>();
-    public ItemDatabase itemDatabase;  // Reference to the database
-    public InventoryUIManager inventoryUIManager;
+
+    void Start()
+    {
+        if (itemDatabase == null)
+            itemDatabase = FindObjectOfType<ItemDatabase>();
+
+        if (uiManager == null)
+            uiManager = FindObjectOfType<InventoryUIManager>();
+    }
 
     public void AddItem(string itemName)
     {
         if (items.ContainsKey(itemName))
-        {
             items[itemName]++;
-        }
         else
-        {
             items[itemName] = 1;
-        }
 
-        Debug.Log("Added: " + itemName);
-        inventoryUIManager.UpdateUI();  // Update the UI when an item is added
+        // Update the UI whenever the inventory changes
+        uiManager.UpdateUI();
     }
 
-
-    public bool HasItem(string itemName, int amount)
+    public bool RemoveItem(string itemName, int count = 1)
     {
-        return items.ContainsKey(itemName) && items[itemName] >= amount;
-    }
+        if (!items.ContainsKey(itemName) || items[itemName] < count)
+            return false;
 
-    public void RemoveItem(string itemName, int amount)
-    {
-        if (HasItem(itemName, amount))
-        {
-            items[itemName] -= amount;
-            Debug.Log("- " + amount + " " + itemName);
-            if (items[itemName] <= 0)
-            {
-                items.Remove(itemName);
-                Debug.Log("Removed item: " + itemName + " from inventory");
-            }
-        }
+        items[itemName] -= count;
+
+        if (items[itemName] <= 0)
+            items.Remove(itemName);
+
+        uiManager.UpdateUI();
+        return true;
     }
 
     public ItemData GetItemData(string itemName)
