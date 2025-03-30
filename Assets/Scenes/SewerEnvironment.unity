@@ -1350,7 +1350,7 @@ GameObject:
   - component: {fileID: 555876693}
   - component: {fileID: 555876695}
   m_Layer: 0
-  m_Name: RataSentada
+  m_Name: SittingRat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

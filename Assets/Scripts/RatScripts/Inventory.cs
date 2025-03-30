@@ -6,20 +6,20 @@ using static UnityEditor.Progress;
 public class Inventory : MonoBehaviour
 {
     public Dictionary<string, int> items = new Dictionary<string, int>();
+    public ItemDatabase itemDatabase;  // Reference to the database
 
     public void AddItem(string itemName)
     {
         if (items.ContainsKey(itemName))
         {
             items[itemName]++;
-            Debug.Log("Added: " + itemName);
         }
         else
         {
             items[itemName] = 1;
-            Debug.Log("Added: " + itemName);
         }
 
+        Debug.Log("Added: " + itemName);
     }
 
     public bool HasItem(string itemName, int amount)
@@ -34,9 +34,15 @@ public class Inventory : MonoBehaviour
             items[itemName] -= amount;
             Debug.Log("- " + amount + " " + itemName);
             if (items[itemName] <= 0)
+            {
                 items.Remove(itemName);
-                Debug.Log("Removed item: " + itemName + "from inventory");
+                Debug.Log("Removed item: " + itemName + " from inventory");
+            }
         }
     }
-}
 
+    public ItemData GetItemData(string itemName)
+    {
+        return itemDatabase.GetItem(itemName);
+    }
+}

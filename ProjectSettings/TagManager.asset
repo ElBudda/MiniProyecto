@@ -7,6 +7,8 @@ TagManager:
   - TubeEntrance
   - TubeExit
   - CraftingTable
+  - CityEntrance
+  - SewerEntrance
   layers:
   - Default
   - TransparentFX
