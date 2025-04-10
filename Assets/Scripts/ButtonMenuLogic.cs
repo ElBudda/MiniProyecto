@@ -7,11 +7,10 @@ using UnityEngine.UI;
 
 public class ButtonMenuLogic : MonoBehaviour
 {
-    public Button miBoton; // Referencia al botón
 
     public void inicio()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(1);
         Time.timeScale = 1.0f;
     }
 

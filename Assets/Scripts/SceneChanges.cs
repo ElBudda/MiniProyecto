@@ -5,10 +5,10 @@ using System.Collections;
 public class SceneChanges : MonoBehaviour
 {
     public int sceneToLoad;
-    public int sewerScene = 2;
-    public int cityScene = 0;
-    public int MenuScene = 3;
-    public int testingScene = 1;
+    public int sewerScene = 3;
+    public int cityScene = 1;
+    public int MenuScene = 0;
+    public int testingScene = 2;
 
     public static event System.Action OnSceneChanged;
 
@@ -19,6 +19,7 @@ public class SceneChanges : MonoBehaviour
     void Start()
     {
         // Find references after scene load
+        Debug.Log("Sewer Scene index: " + sewerScene);
         FindReferences();
     }
 

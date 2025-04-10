@@ -12,7 +12,7 @@ public class CraftingTable : MonoBehaviour
     private PlayerMovement playerMovement;
 
     // Reference to scene manager to check current scene
-    public int sewerSceneIndex = 2; // Set this to match your sewer scene index
+    public int sewerSceneIndex = 3; // Set this to match your sewer scene index
 
     void Awake()
     {

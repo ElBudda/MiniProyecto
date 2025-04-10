@@ -12,6 +12,7 @@ public class SceneTrigger : MonoBehaviour
         if (other.CompareTag("SewerEntrance"))
         {
             targetScene = sceneManager.sewerScene;
+            Debug.Log("Entered Sewer Entrance - Target Scene: " + targetScene);
             canSwitchScene = true;
         }
         else if (other.CompareTag("CityEntrance"))
@@ -40,7 +41,7 @@ public class SceneTrigger : MonoBehaviour
     {
         if (canSwitchScene && Input.GetKeyDown(KeyCode.W))
         {
-            Debug.Log(targetScene);
+            Debug.Log("loading: " + targetScene);
             sceneManager.sceneToLoad = targetScene;
             sceneManager.LoadScene();
         }
