@@ -8,6 +8,7 @@ public class PlayerMovement3d : MonoBehaviour
     public float speed = 5f;
     public float jumpForce = 5f;
     public LayerMask groundLayer;
+    public Transform camTransform; // Reference to the camera
 
     private Rigidbody rb;
     private Vector3 movement;
@@ -25,18 +26,37 @@ public class PlayerMovement3d : MonoBehaviour
 
     void Update()
     {
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.z = Input.GetAxisRaw("Vertical"); // New line: forward/back input
+        float inputX = Input.GetAxisRaw("Horizontal");
+        float inputZ = Input.GetAxisRaw("Vertical");
+
+        // Flatten camera forward/right and normalize
+        Vector3 camForward = camTransform.forward;
+        camForward.y = 0;
+        camForward.Normalize();
+
+        Vector3 camRight = camTransform.right;
+        camRight.y = 0;
+        camRight.Normalize();
+
+        // Calculate camera-relative movement
+        movement = (camForward * inputZ + camRight * inputX).normalized;
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             Jump();
         }
+        
+        // Optional: set animator parameters if needed
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", movement.magnitude);
+        }
     }
 
     void FixedUpdate()
     {
-        rb.velocity = new Vector3(movement.x * speed, rb.velocity.y, movement.z * speed);
+        Vector3 velocity = new Vector3(movement.x * speed, rb.velocity.y, movement.z * speed);
+        rb.velocity = velocity;
     }
 
     void OnCollisionEnter(Collision collision)
@@ -60,5 +80,6 @@ public class PlayerMovement3d : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
     }
 }
+
 
 
