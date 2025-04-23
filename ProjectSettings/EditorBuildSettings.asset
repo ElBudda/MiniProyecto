@@ -8,13 +8,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Menu.unity
     guid: fc0278359a4130b4fb94e34cf1367932
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: ce23536efc5d9454fbca0985d922c735
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Testing.unity
     guid: bed3fa786caf60c4da2f987ba47097d9
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SewerEnvironment.unity
     guid: e3d6670fc71b0fe4589d4be16e63cf08
+  - enabled: 1
+    path: Assets/Scenes/City.unity
+    guid: 75ba2c1b98391fa47ba484f4a0d59e63
   m_configObjects: {}

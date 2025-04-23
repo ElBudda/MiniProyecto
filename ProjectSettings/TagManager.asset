@@ -14,6 +14,7 @@ TagManager:
   - End
   - PickupObject
   - SpawnPoint
+  - Item
   layers:
   - Default
   - TransparentFX

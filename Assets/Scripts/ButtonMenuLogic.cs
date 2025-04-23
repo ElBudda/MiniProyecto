@@ -14,7 +14,6 @@ public class ButtonMenuLogic : MonoBehaviour
         Time.timeScale = 1.0f;
     }
 
-    // Update is called once per frame
     public void salir()
     {
         Debug.Log("cerrando juego");
