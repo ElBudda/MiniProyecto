@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class SceneTrigger : MonoBehaviour
 {
-    public SceneChanges sceneManager; // Reference to SceneChanges script
+    public SceneChanger3D sceneManager; // Reference to SceneChanges script
 
-    private int targetScene; // Scene to load when pressing W
+    private int targetScene; // Scene to load 
     private bool canSwitchScene = false; // Checks if rat is in a trigger
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("SewerEntrance"))
         {
@@ -32,14 +32,14 @@ public class SceneTrigger : MonoBehaviour
         }
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    void OnTriggerExit(Collider other)
     {
         canSwitchScene = false;
     }
 
     void Update()
     {
-        if (canSwitchScene && Input.GetKeyDown(KeyCode.W))
+        if (canSwitchScene && Input.GetKeyDown(KeyCode.Q))
         {
             Debug.Log("loading: " + targetScene);
             sceneManager.sceneToLoad = targetScene;

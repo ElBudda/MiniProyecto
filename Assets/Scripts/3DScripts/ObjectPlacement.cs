@@ -15,16 +15,12 @@ public class ObjectPlacement : MonoBehaviour
     {
         RaycastHit hit;
 
-        // Visualize the ray in the Scene view
         Debug.DrawRay(rayOrigin.position, Vector3.down * 1.5f, Color.red, 10f);
 
-        // Perform the raycast
         if (Physics.Raycast(rayOrigin.position, Vector3.down, out hit, 1.5f))
         {
-            // If the ray hits something, move the object to the hit point
             transform.position = hit.point;
 
-            // Debug output to verify the hit position
             Debug.Log("Hit point: " + hit.point);
         }
         else
@@ -35,6 +31,6 @@ public class ObjectPlacement : MonoBehaviour
 
     void Update()
     {
-        // Update logic if necessary
+
     }
 }

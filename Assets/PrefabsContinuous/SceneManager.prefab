@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7562597426206602086}
-  - component: {fileID: 4952132393514219819}
   - component: {fileID: 5866574084955788164}
+  - component: {fileID: 7004432841539989912}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged
@@ -33,23 +33,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4952132393514219819
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4148283519424025828}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 422c78a2291e4984ebaf0186c3d3e2ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneToLoad: 0
-  sewerScene: 2
-  cityScene: 0
-  MenuScene: 3
-  testingScene: 1
 --- !u!114 &5866574084955788164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,3 +45,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9376e66a7fe17f4a8cb6ec81a3c1042, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7004432841539989912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4148283519424025828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d63aa083f8e3f441a336781423e3c3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneToLoad: 0
+  sewerScene: 2
+  cityScene: 1
+  MenuScene: 0
+  testingScene: 10

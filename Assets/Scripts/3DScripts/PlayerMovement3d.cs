@@ -13,21 +13,28 @@ public class PlayerMovement3d : MonoBehaviour
     private Rigidbody rb;
     private Vector3 movement;
     private bool isGrounded;
+    Animator anim;
 
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
+
     }
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
     }
 
     void Update()
     {
         float inputX = Input.GetAxisRaw("Horizontal");
         float inputZ = Input.GetAxisRaw("Vertical");
+        anim.SetFloat("Xinput", inputX);
+        anim.SetFloat("Zinput", inputZ);
+
+
 
         // Flatten camera forward/right and normalize
         Vector3 camForward = camTransform.forward;
@@ -40,6 +47,18 @@ public class PlayerMovement3d : MonoBehaviour
 
         // Calculate camera-relative movement
         movement = (camForward * inputZ + camRight * inputX).normalized;
+
+        if (inputX < 0)
+        {
+            Debug.Log("Moving Left");
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+
+        if (inputX > 0)
+        {
+            Debug.Log("Moving Right");
+            transform.localScale = new Vector3(1, 1, 1);
+        }
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
