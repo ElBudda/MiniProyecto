@@ -7,19 +7,31 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance;
 
     [System.Serializable]
-    public class FoodItem
+    public class ItemData
     {
         public string name;
+        public Sprite icon;
+        public ItemType type;
         public int foodValue;
 
-        public FoodItem(string n, int v)
+        public ItemData(string name, ItemType type, int foodValue = 0, Sprite icon = null)
         {
-            name = n;
-            foodValue = v;
+            this.name = name;
+            this.type = type;
+            this.foodValue = foodValue;
+            this.icon = icon;
         }
     }
 
-    public List<FoodItem> foodInventory = new List<FoodItem>();
+    public enum ItemType
+    {
+        Food,
+        Trash,
+        Tool,
+        Other
+    }
+
+    public List<ItemData> inventory = new List<ItemData>();
 
     void Awake()
     {
@@ -27,21 +39,29 @@ public class InventoryManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public void AddFood(string name, int value)
-    {
-        foodInventory.Add(new FoodItem(name, value));
-        Debug.Log($"Picked up {name} (+{value} food points)");
-    }
 
-    public void EatFood(int index)
+    public void EatItem(int index)
     {
-        if (index >= 0 && index < foodInventory.Count)
+        if (index < 0 || index >= inventory.Count) return;
+
+        ItemData item = inventory[index];
+        if (item.type == ItemType.Food)
         {
-            FoodItem item = foodInventory[index];
             PlayerFoodSystem.Instance.AddFoodPoints(item.foodValue);
             Debug.Log($"Ate {item.name} (+{item.foodValue} points)");
-            foodInventory.RemoveAt(index);
+            inventory.RemoveAt(index);
+        }
+        else
+        {
+            Debug.LogWarning("Item is not food!");
         }
     }
+
+    public void AddItem(string name, ItemType type, int foodValue = 0, Sprite icon = null)
+    {
+        inventory.Add(new ItemData(name, type, foodValue, icon));
+        Debug.Log($"Picked up {type}: {name}");
+    }
+
 }
 

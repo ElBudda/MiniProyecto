@@ -9,6 +9,13 @@ public class LightingManager : MonoBehaviour
     //Variables
     [SerializeField, Range(0, 24)] public float TimeOfDay;
 
+    public static LightingManager Instance;
+
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+    }
 
     private void Update()
     {
@@ -28,7 +35,11 @@ public class LightingManager : MonoBehaviour
         }
     }
 
-
+    public bool IsNight()
+    {
+        // Example: Night is between 18:00 and 6:00
+        return TimeOfDay >= 18 || TimeOfDay < 6;
+    }
     private void UpdateLighting(float timePercent)
     {
         //Set ambient and fog

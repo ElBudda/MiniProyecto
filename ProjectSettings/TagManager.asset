@@ -15,6 +15,7 @@ TagManager:
   - PickupObject
   - SpawnPoint
   - Item
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -23,8 +24,8 @@ TagManager:
   - Water
   - UI
   - Pixel
-  - 
-  - 
+  - Buildings
+  - Enemy
   - 
   - 
   - 
