@@ -1,6 +1,5 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.LowLevel;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -33,12 +32,14 @@ public class InventoryManager : MonoBehaviour
 
     public List<ItemData> inventory = new List<ItemData>();
 
+ 
+    public int trashPoints = 0;
+
     void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
     }
-
 
     public void EatItem(int index)
     {
@@ -63,5 +64,11 @@ public class InventoryManager : MonoBehaviour
         Debug.Log($"Picked up {type}: {name}");
     }
 
+    // Optional reset method
+    public void ResetTrashPoints()
+    {
+        trashPoints = 0;
+    }
 }
+
 

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using static InventoryManager;
 
 public class Item : MonoBehaviour
@@ -18,6 +18,19 @@ public class Item : MonoBehaviour
     {
         if (!isCollectible) return;
 
+        // ⭐ If Food, immediately add food points
+        if (itemType == ItemType.Food)
+        {
+            PlayerFoodSystem.Instance.AddFoodPoints(foodValue);
+            Debug.Log($" Ate {itemName} (+{foodValue} points) immediately on pickup!");
+        }
+        else if (itemType == ItemType.Trash)
+        {
+            InventoryManager.Instance.trashPoints += 1;
+            Debug.Log($" Collected Trash! Total Trash Points: {InventoryManager.Instance.trashPoints}");
+        }
+
+        // Add to Inventory (optional - can keep or skip)
         InventoryManager.Instance.AddItem(
             itemName,
             itemType,
@@ -25,10 +38,9 @@ public class Item : MonoBehaviour
             icon
         );
 
-        Debug.Log($"Collected: {itemName} ({itemType})");
+        Debug.Log($" Collected: {itemName} ({itemType})");
 
         gameObject.SetActive(false);
     }
+
 }
-
-

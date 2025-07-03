@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [ExecuteAlways]
 public class LightingManager : MonoBehaviour
@@ -9,6 +9,10 @@ public class LightingManager : MonoBehaviour
     //Variables
     [SerializeField, Range(0, 24)] public float TimeOfDay;
 
+    public float daySpeed = 180f;
+    public bool hasHibernatedToday = true;
+
+
     public static LightingManager Instance;
 
     private void Awake()
@@ -16,17 +20,41 @@ public class LightingManager : MonoBehaviour
         if (Instance == null)
             Instance = this;
     }
+    void Start()
+    {
+        TimeOfDay = 6f; // Always start morning
+
+        Debug.Log(" LightingManager: TimeOfDay forced to 6AM at start.");
+    }
 
     private void Update()
     {
-        if (Preset == null)
-            return;
+        if (Preset == null) return;
 
         if (Application.isPlaying)
         {
-            //(Replace with a reference to the game time)
-            TimeOfDay += Time.deltaTime;
-            TimeOfDay %= 24; //Modulus to ensure always between 0-24
+            if (IsNight())
+            {
+                // Nighttime: always advance time
+                TimeOfDay += Time.deltaTime / daySpeed; // Slow down night? tweak if you want
+                TimeOfDay %= 24;
+            }
+            else
+            {
+                // Daytime
+                if (hasHibernatedToday)
+                {
+                    // If player already hibernated, day runs normally
+                    TimeOfDay += Time.deltaTime / 60f;
+                    TimeOfDay %= 24;
+                }
+                else
+                {
+                    // Player didn't hibernate → time locks at 6
+                    TimeOfDay = 6f;
+                }
+            }
+
             UpdateLighting(TimeOfDay / 24f);
         }
         else
@@ -34,6 +62,8 @@ public class LightingManager : MonoBehaviour
             UpdateLighting(TimeOfDay / 24f);
         }
     }
+
+
 
     public bool IsNight()
     {

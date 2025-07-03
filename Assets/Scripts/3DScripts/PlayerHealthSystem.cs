@@ -77,6 +77,7 @@ public class PlayerHealthSystem : MonoBehaviour
         Debug.Log("You Died!");
         // TODO: Handle death (restart, game over)
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        InventoryManager.Instance.ResetTrashPoints();
     }
 }
 

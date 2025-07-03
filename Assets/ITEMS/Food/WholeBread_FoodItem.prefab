@@ -132,8 +132,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b36e670a11e39a4e8d23a35ce18cee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Unknown
+  itemName: Whole Bread
   icon: {fileID: 0}
   itemType: 0
-  foodValue: 1
+  foodValue: 2
   isCollectible: 1

@@ -31,6 +31,12 @@ public class EnemyCat : MonoBehaviour, IDamageable
     public int health = 5;
     public float knockbackForce = 5f;
 
+    [Header("Day/Night Settings")]
+    public float dayMoveSpeed = 2f;
+    public float nightMoveSpeed = 4f;
+    public float dayDetectionRange = 6f;
+    public float nightDetectionRange = 10f;
+    public int nightAttackDamage = 2;
     private enum CatState { Idle, Chasing, Telegraphing, Lunging, Recovering }
     private CatState currentState = CatState.Idle;
 
@@ -64,10 +70,25 @@ public class EnemyCat : MonoBehaviour, IDamageable
             case CatState.Chasing:
                 ChasePlayer();
                 break;
-                // Telegraphing, Lunging are coroutines
+        }
+
+        UpdateStatsForTime();
+    }
+    void UpdateStatsForTime()
+    {
+        if (LightingManager.Instance != null && LightingManager.Instance.IsNight())
+        {
+            moveSpeed = nightMoveSpeed;
+            detectionRange = nightDetectionRange;
+            attackDamage = nightAttackDamage;
+        }
+        else
+        {
+            moveSpeed = dayMoveSpeed;
+            detectionRange = dayDetectionRange;
+            attackDamage = 1;
         }
     }
-
     void CheckForPlayer()
     {
         float distance = Vector3.Distance(transform.position, player.position);
