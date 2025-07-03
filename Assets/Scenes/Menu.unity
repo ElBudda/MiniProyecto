@@ -1204,7 +1204,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1614586922}
         m_TargetAssemblyTypeName: ButtonMenuLogic, Assembly-CSharp
-        m_MethodName: inicio
+        m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1432,6 +1432,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1614586922}
+    - target: {fileID: 3227462034431889136, guid: ac8ed8351d71a784b8dff7b9fc816b91, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: QuitGame
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

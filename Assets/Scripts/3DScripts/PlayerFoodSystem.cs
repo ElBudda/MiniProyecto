@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerFoodSystem : MonoBehaviour
 {
@@ -26,7 +27,8 @@ public class PlayerFoodSystem : MonoBehaviour
 
         if (dayNumber >= targetDaysToWin)
         {
-            GameManager.Instance.WinGame();
+            SceneManager.LoadScene("Victory");
+
         }
 
         EnemySpawner.Instance.SpawnForDay(dayNumber);

@@ -20,7 +20,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/City.unity
     guid: 75ba2c1b98391fa47ba484f4a0d59e63
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Sewer.unity
     guid: fbd3474fbeb8b34448cd8c2e2899d7d6
+  - enabled: 1
+    path: Assets/Scenes/Victory.unity
+    guid: a106a902f4d6136489db95f463567b3a
+  - enabled: 1
+    path: Assets/Scenes/Death.unity
+    guid: 1186a843233f31e41adabb642c1b7b3f
   m_configObjects: {}

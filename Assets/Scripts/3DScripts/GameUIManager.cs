@@ -11,37 +11,59 @@ public class GameUIManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null) Instance = this;
+        // Singleton logic
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         else
         {
             Destroy(gameObject);
             return;
         }
 
+        HideAllScreens();
+    }
+
+    void Start()
+    {
+        HideAllScreens();
+    }
+
+    private void HideAllScreens()
+    {
         if (deathScreen != null) deathScreen.SetActive(false);
         if (victoryScreen != null) victoryScreen.SetActive(false);
     }
 
-
     public void ShowDeathScreen()
     {
-        deathScreen.SetActive(true);
+        HideAllScreens();
+        if (deathScreen != null) deathScreen.SetActive(true);
     }
 
     public void ShowVictoryScreen()
     {
-        victoryScreen.SetActive(true);
+        HideAllScreens();
+        if (victoryScreen != null) victoryScreen.SetActive(true);
     }
 
     public void RestartGame()
     {
+        // Destroy any DontDestroyOnLoad player object if it exists
+        Destroy(PlayerHealthSystem.Instance?.gameObject);
+        // Reset singleton so new one in the new scene can take over
+        Instance = null;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void GoToMenu()
     {
         Destroy(PlayerHealthSystem.Instance?.gameObject);
-        SceneManager.LoadScene("Menu"); // Make sure this is your menu scene name
+        Instance = null;
+        SceneManager.LoadScene("Menu");
     }
 }
+
 

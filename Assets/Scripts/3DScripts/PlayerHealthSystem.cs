@@ -9,7 +9,7 @@ public class PlayerHealthSystem : MonoBehaviour
     public float knockbackForce = 3f;
     public float knockbackDuration = 0.3f;
 
-    public int maxHealth = 100;
+    public int maxHealth = 5;
     public int currentHealth;
 
     void Awake()
@@ -75,9 +75,7 @@ public class PlayerHealthSystem : MonoBehaviour
     void Die()
     {
         Debug.Log("You Died!");
-
-        if (GameUIManager.Instance != null)
-            GameUIManager.Instance.ShowDeathScreen();
+        SceneManager.LoadScene("Death");
     }
 }
 
