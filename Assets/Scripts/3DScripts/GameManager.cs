@@ -5,7 +5,20 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public GameObject winScreen;
+    void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
     void Awake()
     {
         if (Instance == null) Instance = this;

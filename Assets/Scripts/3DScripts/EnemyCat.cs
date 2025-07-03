@@ -37,10 +37,10 @@ public class EnemyCat : MonoBehaviour, IDamageable
     public float dayDetectionRange = 6f;
     public float nightDetectionRange = 10f;
     public int nightAttackDamage = 2;
+
     private enum CatState { Idle, Chasing, Telegraphing, Lunging, Recovering }
     private CatState currentState = CatState.Idle;
 
-    // Stored for lunge
     private Vector3 storedLungeDirection;
     private float storedPlayerDistance;
 
@@ -51,10 +51,7 @@ public class EnemyCat : MonoBehaviour, IDamageable
         if (player == null)
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-            if (playerObj != null)
-            {
-                player = playerObj.transform;
-            }
+            if (playerObj != null) player = playerObj.transform;
         }
     }
 
@@ -67,6 +64,7 @@ public class EnemyCat : MonoBehaviour, IDamageable
             case CatState.Idle:
                 CheckForPlayer();
                 break;
+
             case CatState.Chasing:
                 ChasePlayer();
                 break;
@@ -74,6 +72,7 @@ public class EnemyCat : MonoBehaviour, IDamageable
 
         UpdateStatsForTime();
     }
+
     void UpdateStatsForTime()
     {
         if (LightingManager.Instance != null && LightingManager.Instance.IsNight())
@@ -89,6 +88,7 @@ public class EnemyCat : MonoBehaviour, IDamageable
             attackDamage = 1;
         }
     }
+
     void CheckForPlayer()
     {
         float distance = Vector3.Distance(transform.position, player.position);
@@ -112,14 +112,12 @@ public class EnemyCat : MonoBehaviour, IDamageable
 
         if (distance > preferredLungeRange + lungeBuffer)
         {
-            // Move closer
             Vector3 direction = (player.position - transform.position).normalized;
             transform.position += direction * moveSpeed * Time.deltaTime;
             Debug.Log("[CAT] Moving closer to preferred range...");
         }
         else if (distance < preferredLungeRange - lungeBuffer)
         {
-            // Optional: back up
             Vector3 direction = (transform.position - player.position).normalized;
             transform.position += direction * moveSpeed * Time.deltaTime;
             Debug.Log("[CAT] Backing up to maintain range...");
@@ -135,9 +133,7 @@ public class EnemyCat : MonoBehaviour, IDamageable
     {
         currentState = CatState.Telegraphing;
         Debug.Log("[CAT] STATE CHANGE: Chasing → Telegraphing");
-        Debug.Log("[CAT] Telegraphing...");
 
-        // Lock direction and distance at start
         storedLungeDirection = (player.position - transform.position).normalized;
         storedPlayerDistance = Vector3.Distance(transform.position, player.position);
         Debug.Log($"[CAT] Locked direction. Snapshot distance: {storedPlayerDistance}");
@@ -165,9 +161,8 @@ public class EnemyCat : MonoBehaviour, IDamageable
         Debug.Log($"[CAT] Calculated lunge force: {calculatedLungeForce}");
 
         rb.AddForce(storedLungeDirection * calculatedLungeForce, ForceMode.VelocityChange);
-        Debug.Log("[CAT] Lunging!");
 
-        yield return new WaitForSeconds(0.2f); // Impact window
+        yield return new WaitForSeconds(0.2f);
 
         float distance = Vector3.Distance(transform.position, player.position);
         if (distance <= attackRange)

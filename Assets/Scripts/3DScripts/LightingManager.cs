@@ -9,7 +9,7 @@ public class LightingManager : MonoBehaviour
     //Variables
     [SerializeField, Range(0, 24)] public float TimeOfDay;
 
-    public float daySpeed = 180f;
+    public float dayDurationSeconds = 10f;
     public bool hasHibernatedToday = true;
 
 
@@ -35,22 +35,21 @@ public class LightingManager : MonoBehaviour
         {
             if (IsNight())
             {
-                // Nighttime: always advance time
-                TimeOfDay += Time.deltaTime / daySpeed; // Slow down night? tweak if you want
-                TimeOfDay %= 24;
+                // Always advance at night
+                TimeOfDay += (24f / dayDurationSeconds) * Time.deltaTime;
+                TimeOfDay %= 24f;
             }
             else
             {
-                // Daytime
                 if (hasHibernatedToday)
                 {
-                    // If player already hibernated, day runs normally
-                    TimeOfDay += Time.deltaTime / 60f;
-                    TimeOfDay %= 24;
+                    // Normal daytime progression
+                    TimeOfDay += (24f / dayDurationSeconds) * Time.deltaTime;
+                    TimeOfDay %= 24f;
                 }
                 else
                 {
-                    // Player didn't hibernate → time locks at 6
+                    // Player failed to sleep = stuck at 6am
                     TimeOfDay = 6f;
                 }
             }
@@ -62,6 +61,9 @@ public class LightingManager : MonoBehaviour
             UpdateLighting(TimeOfDay / 24f);
         }
     }
+
+
+
 
 
 
