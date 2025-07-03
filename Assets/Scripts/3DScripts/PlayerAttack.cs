@@ -1,48 +1,68 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerAttack : MonoBehaviour
 {
     [Header("Attack Settings")]
     public Transform attackPoint;
     public float attackRange = 1.5f;
-    public int damage = 50;
+    public int damage = 5;
+    public float attackCooldown = 0.6f;
+    public float windUpTime = 0.2f;
     public LayerMask enemyLayer;
 
     [Header("Animation")]
     public Animator animator;
 
+    private bool isAttacking = false;
+    private PlayerMovement3d movement;
+
+    void Start()
+    {
+        movement = GetComponent<PlayerMovement3d>();
+    }
+
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !isAttacking)
         {
-            Attack();
+            StartCoroutine(AttackRoutine());
         }
     }
 
-    void Attack()
+    IEnumerator AttackRoutine()
     {
-        Debug.Log("Attempting attack!");
+        isAttacking = true;
 
-        // Play attack animation
+        if (movement != null)
+            movement.canMove = false;
+
         if (animator != null)
-        {
             animator.SetTrigger("attack");
-        }
-        else
-        {
-            Debug.LogWarning("Animator not assigned!");
-        }
 
-        // Find enemies in range
+        yield return new WaitForSeconds(windUpTime);
+
+        DoDamageCheck();
+
+        yield return new WaitForSeconds(attackCooldown - windUpTime);
+
+        if (movement != null)
+            movement.canMove = true;
+
+        isAttacking = false;
+    }
+
+    void DoDamageCheck()
+    {
         Collider[] hits = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayer);
         Debug.Log($"Found {hits.Length} targets in range.");
 
         foreach (Collider hit in hits)
         {
-            IDamageable damageable = hit.GetComponent<IDamageable>();
+            IDamageable damageable = hit.GetComponentInParent<IDamageable>();
             if (damageable != null)
             {
-                Debug.Log($"Dealing damage to {hit.gameObject.name}");
+                Debug.Log($"Dealing {damage} damage to {hit.name}");
                 damageable.TakeDamage(damage);
             }
         }
@@ -51,10 +71,10 @@ public class PlayerAttack : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         if (attackPoint == null) return;
-
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 }
+
 
 

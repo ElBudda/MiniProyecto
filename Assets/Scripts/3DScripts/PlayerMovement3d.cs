@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement3d : MonoBehaviour
@@ -9,6 +10,10 @@ public class PlayerMovement3d : MonoBehaviour
     public float jumpForce = 5f;
     public LayerMask groundLayer;
     public Transform camTransform; // Reference to the camera
+    public bool canMove = true;
+
+    [HideInInspector]
+    public bool isKnockedBack = false;
 
     private Rigidbody rb;
     private Vector3 movement;
@@ -34,7 +39,16 @@ public class PlayerMovement3d : MonoBehaviour
         anim.SetFloat("Xinput", inputX);
         anim.SetFloat("Zinput", inputZ);
 
-
+        if (!canMove || isKnockedBack)
+        {
+            anim.SetFloat("Xinput", 0);
+            anim.SetFloat("Zinput", 0);
+            if (animator != null)
+            {
+                animator.SetFloat("Speed", 0);
+            }
+            return;
+        }
 
         // Flatten camera forward/right and normalize
         Vector3 camForward = camTransform.forward;
@@ -50,13 +64,13 @@ public class PlayerMovement3d : MonoBehaviour
 
         if (inputX < 0)
         {
-            Debug.Log("Moving Left");
+           
             transform.localScale = new Vector3(-1, 1, 1);
         }
 
         if (inputX > 0)
         {
-            Debug.Log("Moving Right");
+           
             transform.localScale = new Vector3(1, 1, 1);
         }
 
@@ -74,6 +88,8 @@ public class PlayerMovement3d : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!canMove || isKnockedBack) return;
+
         Vector3 velocity = new Vector3(movement.x * speed, rb.velocity.y, movement.z * speed);
         rb.velocity = velocity;
     }
