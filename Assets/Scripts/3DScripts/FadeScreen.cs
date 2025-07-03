@@ -18,19 +18,13 @@ public class FadeScreen : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
     }
+
     void Start()
     {
-        // Ensure it starts black
+        if (canvasGroup == null) canvasGroup = GetComponent<CanvasGroup>();
         canvasGroup.alpha = 1;
-
-        // Automatically fade in on scene load
-        StartCoroutine(FadeInAtStart());
-    }
-
-    IEnumerator FadeInAtStart()
-    {
-        yield return new WaitForSeconds(0.1f);
-        yield return FadeIn();
+        canvasGroup.blocksRaycasts = true;
+        StartCoroutine(FadeIn());
     }
 
     public IEnumerator FadeOut()
@@ -59,4 +53,5 @@ public class FadeScreen : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
     }
 }
+
 
